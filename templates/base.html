@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="js-menu-toggle">
+            <span id="cls" class="iconify" data-icon="mingcute:close-fill"></span>
+          </span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+    <header class="site-navbar mt-3">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="site-logo col-6"><a href="/">PetChat</a></div>
+          <nav class="mx-auto site-navigation">
+            <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
+              <li><a href="/feed" class="nav-link active">Новости</a></li>
+              <li><a href="/profile">Профиль</a></li>
+              <li class="has-children">
+                    <a data-toggle="collapse" data-target="#collapseItem0" href="/messages">Мессенджер<span class="iconify" data-icon="ic:round-keyboard-arrow-down"></span></a>
+                <ul class="dropdown">
+                  <li><a href="/messages">Сообщения</a></li>
+                  <li><a href="/friends">Друзья</a></li>
+                  <li><a href="/groups">Сообщества</a></li>
+                </ul>
+              </li>
+              <li><a href="/support">Поддержка</a></li>
+              <li><a href="/settings">Настройки</a></li>
+              <li class="d-lg-none"><a href="/login">Войти</a></li>
+            </ul>
+          </nav>
+          <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
+            <div class="ml-auto">
+              {% if current_user.is_authenticated %}
+                  <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+              {% else %}
+                  <a href="/login" class="btn btn-primary border-width-2 d-none d-lg-inline-block">Войти</a>
+              {% endif %}
+            </div>
+            <a href="/" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="iconify" data-icon="charm:menu-hamburger"></span></a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main role="main" class="container">
+        {% block content %}{% endblock %}
+    </main>
+    <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.sticky.js"></script>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>
