@@ -1,4 +1,232 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/images/favicon.png" rel="icon" type="image/png">
+    <title> {{ title }} </title>
+    <meta name="description" content="PetChat - это социальная сеть для домашних животных, которая позволяет владельцам и их питомцам общаться и делиться моментами радости и счастья.">
+    <link rel="stylesheet" href="../static/css/tailwind.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white dark:bg-slate-950 overflow-x-hidden">
+    <header class="lg:py-4 lg:px-6 py-3 px-4 border-b border-slate-200/60 dark:border-slate-600/40 bg-white/95 backdrop-blur-xl z-40 dark:bg-slate-900/80 uk-animation-slide-top-small" uk-sticky>
+        <div class="max-w-5xl mx-auto">
+            <div class="flex justify-center items-center ">
+                <div id="header-nav" class="max-md:hidden max-md:bg-white max-md:p-5 max-md:fixed max-md:top-0 max-md:shadow-md max-md:left-0 max-md:pt-14 max-md:w-full max-md:z-10">
+                    <nav class="flex lg:items-center font-semibold text-slate-500 dark:text-white/70 lg:gap-1 max-md:border-t max-md:pt-2 max-md:flex max-md:flex-col" uk-scrollspy-nav="closest: a ; scroll: true">
+                        <a class="lg:py-1.5 py-2.5 px-3 duration-500 hover:text-black" href="#home">Главная</a>
+                        <a class="lg:py-1.5 py-2.5 px-3 duration-500 hover:text-black" href="#features">Особенности</a>
+                        <a class="lg:py-1.5 py-2.5 px-3 duration-500 hover:text-black" href="#demos">Галлерея</a>
+                        <a class="lg:py-1.5 py-2.5 px-3 duration-500 hover:text-black" href="#faq">FAQ</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
 
-{% block content %}
-{% endblock %}
+    <main class="md:mt-10 -mt-8 pt-8" id="home">
+        <div class="relative md:mb-44">
+            <div class="max-w-5xl mx-auto space-y-32 max-md:p-8">
+                <!-- Главная -->
+                <section>
+                    <div class="flex flex-col justify-center mt-6 text-center gap-6">
+                        <div>
+                            <img src="../static/images/logo.png" alt="" class="max-md:w-24  mx-auto">
+                        </div>
+                        <p class="max-w-3xl mx-auto text-gray-500 sm:text-lg text-sm leading-relaxed dark:text-white"> - это социальная сеть для домашних животных, которая позволяет владельцам и их питомцам общаться и делиться моментами радости и счастья.</p>
+                    </div>
+                    <div class="md:flex justify-center items-center gap-4 mt-8 font-semibold text-sm hidden">
+                        <a class="flex items-center gap-3 rounded-lg px-5 py-2.5 bg-black text-white shadow dark:bg-white/90 dark:text-black" href="/register">
+                            Зарегистрироваться
+                        </a>
+                    </div>
+                    <!-- hero -->
+                    <div class="flex items-center justify-center relative md:mt-32 mt-20" >
+        
+                        <div class="lg:rounded-xl rounded-md shadow-xl z-10 scale-125 overflow-hidden relative w-1/2">
+                            <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                            <img src="../static/images/demos/demo-1.jpg" alt="" class="">
+                        </div>
+        
+                        <div class="w-1/2 absolute left-0 delay-500 uk-animation-slide-right-medium">
+                            <div class="lg:rounded-xl rounded-md shadow-md overflow-hidden -skew-x-6">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="w-1/2 absolute right-0 duration-50 uk-animation-slide-left-medium">
+                            <div class="lg:rounded-xl rounded-md shadow-md overflow-hidden skew-x-6">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="features"></div>
+                </section>
+                <!-- Особенности -->
+                <section>
+                    <div class="grid md:grid-cols-3 grid-cols-2 gap-5 md:gap-y-10 md:mt-8 -mt-6 md:text-xl text-sm font-medium" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100">
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-pink-200 md:p-1.5 p-1 inline-flex ring right-2 ring-pink-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="reader" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Удобный дизайн </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-yellow-200 md:p-1.5 p-1 inline-flex ring right-2 ring-yellow-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="cog" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Полезные рекомендации</div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-emerald-200 md:p-1.5 p-1 inline-flex ring right-2 ring-emerald-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="leaf" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div>  Сообщество любителей </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-sky-200 md:p-1.5 p-1 inline-flex ring ring-sky-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="albums" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Организация мероприятий </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-purple-200 md:p-1.5 p-1 inline-flex ring right-2 ring-purple-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="man" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Поиск новых друзей  </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-pink-200 md:p-1.5 p-1 inline-flex ring right-2 ring-pink-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="mail" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Пет-френдли советы  </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" class="absolute -bottom-44 w-full max-lg:hidden rotate-3">
+                <path fill="#f1f5f9" d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" class="fill-current text-slate-50 dark:text-slate-800/60"></path>
+            </svg>
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" class="absolute -bottom-40 w-full max-lg:hidden -rotate-6">
+                <path fill="#f1f5f9" d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" class="fill-current text-slate-50/80 dark:text-slate-800/40"></path>
+            </svg>
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" class="absolute -bottom-44 w-full max-lg:hidden">
+                <path fill="#f1f5f9" d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" class="fill-current text-slate-100 dark:text-slate-800"></path>
+            </svg>
+        </div>
+
+        <!-- Фото -->
+        <section class="bg-slate-100 md:py-20 py-8 md:my-20 my-8 relative dark:bg-dark2" id="demos">
+            <div class="max-w-5xl mx-auto max-lg:p-8">
+                <div class="text-center md:space-y-3">
+                    <div class="lg:text-3xl text-lg md:font-bold font-semibold text-black dark:text-white"> Галлерея </div>
+                    <p class="max-w-3xl mx-auto text-gray-500 md:text-base text-sm leading-relaxed dark:text-white/80">  Присоединяйтесь к нашему сообществу PetChat! </p>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-6 lg:mt-20 mt-10 text-center font-normal capitalize"   uk-scrollspy="target: > a ; cls: uk-animation-slide-bottom-small ; delay: 160">
+                    
+                   
+                    <a>
+                        <div class="group"> 
+                            <div class="md:rounded-xl rounded-md shadow-md overflow-hidden duration-300 group-hover:-translate-y-1 group-hover:scale-[1.01] group-hover:shadow-lg">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="" class="w-full h-full object-cover inset-0">
+                            </div>
+                            <p class="py-4 group-hover:text-black"> Лента </p>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="group"> 
+                            <div class="md:rounded-xl rounded-md shadow-md overflow-hidden duration-300 group-hover:-translate-y-1 group-hover:scale-[1.01] group-hover:shadow-lg">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="" class="w-full h-full object-cover inset-0">
+                            </div>
+                            <p class="py-4 group-hover:text-black"> Поиск </p>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="group"> 
+                            <div class="md:rounded-xl rounded-md shadow-md overflow-hidden duration-300 group-hover:-translate-y-1 group-hover:scale-[1.01] group-hover:shadow-lg">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="" class="w-full h-full object-cover inset-0">
+                            </div>
+                            <p class="py-4 group-hover:text-black"> Мессенджер </p>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="group"> 
+                            <div class="md:rounded-xl rounded-md shadow-md overflow-hidden duration-300 group-hover:-translate-y-1 group-hover:scale-[1.01] group-hover:shadow-lg">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="" class="w-full h-full object-cover inset-0">
+                            </div>
+                            <p class="py-4 group-hover:text-black"> Профиль </p>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="group"> 
+                            <div class="md:rounded-xl rounded-md shadow-md overflow-hidden duration-300 group-hover:-translate-y-1 group-hover:scale-[1.01] group-hover:shadow-lg">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="" class="w-full h-full object-cover inset-0">
+                            </div>
+                            <p class="py-4 group-hover:text-black"> Регистрация </p>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="group">
+                            <div class="md:rounded-xl rounded-md shadow-md overflow-hidden duration-300 group-hover:-translate-y-1 group-hover:scale-[1.01] group-hover:shadow-lg">
+                                <div class="bg-gray-950 w-full py-1.5 px-3"> <svg class="w-6" viewBox="0 0 420 100" focusable="false"><circle fill="#ff5f57" cx="50" cy="50" r="50"></circle><circle fill="#febc2e" cx="210" cy="50" r="50"></circle><circle fill="#28c840" cx="370" cy="50" r="50"></circle></svg> </div>
+                                <img src="../static/images/demos/demo-1.jpg" alt="" class="w-full h-full object-cover inset-0">
+                            </div>
+                            <p class="py-4 group-hover:text-black"> Авторизация </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <div class="relative max-lg:hidden">
+            <svg class="absolute -mt-20 fill-current text-slate-100 dark:text-slate-800/40 invisible lg:visible rotate-180 scale-x-[-1]" width="100%" height="100px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 2560 100" style="enable-background:new 0 0 2560 100" xml:space="preserve">
+                <polygon points="2560 0 2560 100 0 100"></polygon>
+            </svg>
+        </div>
+        <div class="max-w-5xl mx-auto md:space-y-32 max-md:p-8 relative lg:mt-36">
+            <!-- Faq -->
+            <section class="max-md:my-20">
+                <div class="text- center space-y-3" id="faq">
+                    <div class="p-1 text-sm text-yellow-500 bg-yellow-100 px-2 inline-block rounded-md -rotate-3 dark:bg-yellow-400/20"> FAQ</div>
+                    <div class="lg:text-3xl text-lg md:font-bold font-semibold text-black dark:text-white"> Вопросы?</div>
+                </div>
+                <div class="grid lg:grid-cols-2 lg:gap-10 mt-16 gap-4 text-sm">
+                    <div>
+                    <h1 class="md:text-xl text-base font-semibold mb-2 text-black dark:text-white"> Как найти других пользователей для дружбы и общения на PetChat? </h1>
+                    <p class="lg:text-lg"> Вы можете использовать функцию поиска на платформе, чтобы найти других пользователей по различным критериям</p>
+                    </div>
+                    <div>
+                    <h1 class="md:text-xl text-base font-semibold mb-2 text-black dark:text-white"> Как поделиться своим опытом и историями о питомце на PetChat? </h1>
+                    <p class="lg:text-lg"> Для того чтобы поделиться своим опытом и историями о питомце на PetChat, вы можете создать пост на своей ленте, добавив фото и текст.</p>
+                    </div>
+                    <div>
+                    <h1 class="md:text-xl text-base font-semibold mb-2 text-black dark:text-white"> Какие возможности для общения предоставляет PetChat? </h1>
+                    <p class="lg:text-lg">  PetChat предоставляет удобный мессенджер для обмена мгновенными сообщениями</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="max-w-5xl mx-auto mb-6 mt-32 pt-6 border-t">
+            <div class="flex justify-center text-sm dark:to-white">
+                <a class="ml-2 hover:underline hover:text-blue-500" href="https://github.com/Lntck"> Lntck</a>
+            </div>
+        </div>
+    </footer>
+    <script src="../static/js/uikit.min.js"></script>
+    <script src="../static/js/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

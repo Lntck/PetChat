@@ -1,55 +1,45 @@
-{% extends "base.html" %}
-
-{% block content %}
-<h1>Регистрация</h1>
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(class="form-control", type="email") }}<br>
-        {% for error in form.email.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
-        {% for error in form.password.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password_again.label }}<br>
-        {{ form.password_again(class="form-control", type="password") }}<br>
-        {% for error in form.password_again.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.name.label }}<br>
-        {{ form.name(class="form-control") }}<br>
-        {% for error in form.name.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.about.label }}<br>
-        {{ form.about(class="form-control") }}<br>
-        {% for error in form.about.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-    {{message}}
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/images/favicon.png" rel="icon" type="image/png">
+    <title>{{ title }}</title>
+    <meta name="description" content="PetChat - это социальная сеть для домашних животных, которая позволяет владельцам и их питомцам общаться и делиться моментами радости и счастья.">
+    <link rel="stylesheet" href="../static/css/tailwind.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white dark:bg-slate-900">
+    <div class="flex flex-col h-screen justify-center items-center">
+        <div class="max-w-sm mx-auto md:px-10 p-4 w-full">
+            <div>
+                <a href="/about">
+                    <div class="flex justify-center mb-12">
+                        <img src="../static/images/logo.png" alt="" class="w-auto h-20 shrink-0 bg-fuchsia-100 px-3 rounded-2xl p-2.5">
+                    </div>
+                </a>
+                <form action="" method="post" class="space-y-3">
+                    {{ form.hidden_tag() }}
+                    {{ form.name(class="!w-full", id="name", type="text", placeholder=form.name.label.text) }}
+                    {{ form.email(class="!w-full", type="email", id="email", placeholder=form.email.label.text) }}
+                    {{ form.password(class="!w-full", id="password", type="password", placeholder=form.password.label.text) }}
+                    {{ form.password_again(class="!w-full", id="password_again", type="password", placeholder=form.password_again.label.text) }}
+                    <div class="text-red-500 font-weight-bold">
+                      {{ message }}
+                    </div>
+                    {{ form.submit(type="submit", class="font-medium w-full rounded-lg bg-slate-900 py-1.5 px-4 text-white h-[38px] active:scale-[0.97] transition-all duration-150") }}
+                    <div class="space-x-2 text-sm text-center text-slate-400 dark:text-white/70">
+                        <span> Есть аккаунт? </span>
+                        <span>—</span>
+                        <a href="/login" class="text-gray-600 hover:text-gray-500">Войти</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../static/js/uikit.min.js"></script>
+    <script src="../static/js/script.js"></script>
+</body>
+</html>
