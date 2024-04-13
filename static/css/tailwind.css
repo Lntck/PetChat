@@ -6291,10 +6291,6 @@ input:checked + .switch-button {
     width: 4rem;
   }
 
-  .max-md\:w-24 {
-    width: 6rem;
-  }
-
   .max-md\:w-5\/6 {
     width: 83.333333%;
   }

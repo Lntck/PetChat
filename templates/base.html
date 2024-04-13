@@ -14,11 +14,12 @@
 <body>
     <div id="wrapper">
         <div id="sidebar" class="fixed top-0 left-0 z-40 max-md:top-auto max-md:bottom-0">
-            <div id="sidebar__inner" class="flex sside md:flex-col justify-between md:h-screen md:p-2 p-1 transition-all duration-500 bg-white shadow dark:bg-dark2 2xl:w-72 xl:w-60 max-xl:w-[73px] max-md:w-screen max-md:border-t max-md:dark:border-slate-700">
+            <div id="sidebar__inner" class="flex side md:flex-col justify-between md:h-screen md:p-2 p-1 transition-all duration-500 bg-white shadow dark:bg-dark2 2xl:w-72 xl:w-60 max-xl:w-[73px] max-md:w-screen max-md:border-t max-md:dark:border-slate-700">
                 <div class="flex h-20 px-2 max-md:fixed max-md:top-0 max-md:w-full max-md:bg-white/80 max-md:left-0 max-md:px-4 max-md:h-14 max-md:shadow-sm max-md:dark:bg-slate-900/80 backdrop-blur-xl">
                     <a href="/about" id="logo" class="flex items-center gap-3">
                         <img id="logo__icon" src="../static/images/logo-icon.png" alt="" class="md:w-8 hidden text-2xl max-xl:!block max-md:!hidden shrink-0 uk-animation-scale-up">
                         <img id="logo__text" src="../static/images/logo.png" alt="" class="w-full h-10 ml-1 max-xl:hidden max-md:block dark:!hidden">
+                        <img id="logo__text" src="../static/images/logo.png" alt="" class="w-full h-10 ml-1 !hidden max-xl:!hidden max-md:block dark:max-md:!block dark:!block">
                     </a>
                 </div>
 
@@ -109,7 +110,7 @@
                 <!-- Профиль -->
                 <div >
                     <a id="profile-link" class="flex items-center gap-3 p-3 group">
-                        <img src="../static/images/avatars/avatar-7.jpg" alt="" class="rounded-full md:w-7 md:h-7 w-5 h-5 shrink-0">
+                        <img src="../static/images/avatars/{{ current_user.avatar }}" alt="" class="rounded-full md:w-7 md:h-7 w-5 h-5 shrink-0">
                         <span class="font-semibold text-sm max-xl:hidden">  {{ current_user.name }} </span>
                         <ion-icon name="chevron-forward-outline"  class="text-xl ml-auto duration-200 group-aria-expanded:-rotate-90 max-xl:hidden"></ion-icon>
                     </a>

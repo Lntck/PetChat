@@ -12,8 +12,8 @@ class User(SqlAlchemyBase, UserMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.VARCHAR, nullable=True)
-    about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    avatar = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    about = sqlalchemy.Column(sqlalchemy.String, nullable=True, default="Пока тут пусто! Напишите что-нибудь!")
+    avatar = sqlalchemy.Column(sqlalchemy.String, nullable=True, default="avatar.jpeg")
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)

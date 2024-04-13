@@ -4,9 +4,9 @@
         <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
             <div class="main__inner">
                 <div class="flex max-lg:flex-col xl:gap-10 md:gap-3 md:mt-10" id="js-oversized">
-                    <div class="md:max-w-[510px] mx-auto flex-1 xl:space-y-6 space-y-3">
+                    <div class="md:max-w-[510px] flex-1 xl:space-y-6 space-y-3">
                         <!-- Сделать пост-->
-                        <form action="" method="post" class="space-y-3" enctype="multipart/form-data">
+                        <form action="" method="post" class="space-y-3" enctype="multipart/form-data" uk-scrollspy="target: > * > *; cls: uk-animation-scale-up; delay: 100 ;repeat: false">
                             {{ form.hidden_tag() }}
                             <div class="bg-white rounded-xl shadow-sm p-4 space-y-4 text-sm font-medium border1 dark:bg-dark2">
                                 <div class="flex items-center gap-3">
@@ -27,7 +27,7 @@
 
                         <!-- Посты -->
                         {% for post in posts %}
-                        <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2">
+                        <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2" uk-scrollspy="target: > * > *; cls: uk-animation-scale-up; delay: 100 ;repeat: false">
                             <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
                                 <a href="/profile/{{ post.user.id }}"> <img src="../static/images/avatars/{{ post.user.avatar }}" alt="" class="w-9 h-9 rounded-full"> </a>
                                 <div class="flex-1">
@@ -70,27 +70,10 @@
                             </div>
                         </div>
                         {% endfor %}
-                        <div class="rounded-xl shadow-sm p-4 space-y-4 bg-slate-200/40 animate-pulse border1 dark:bg-dark2">
-                            <div class="flex gap-3">
-                                <div class="w-9 h-9 rounded-full bg-slate-300/20"></div>
-                                <div class="flex-1 space-y-3">
-                                    <div class="w-40 h-5 rounded-md bg-slate-300/20"></div>
-                                    <div class="w-24 h-4 rounded-md bg-slate-300/20"></div>
-                                </div>
-                                <div class="w-6 h-6 rounded-full bg-slate-300/20"></div>
-                            </div>
-                            <div class="w-full h-52 rounded-lg bg-slate-300/10 my-3"> </div>
-                            <div class="flex gap-3">
-                                <div class="w-16 h-5 rounded-md bg-slate-300/20"></div>
-                                <div class="w-14 h-5 rounded-md bg-slate-300/20"></div>
-                                <div class="w-6 h-6 rounded-full bg-slate-300/20 ml-auto"></div>
-                                <div class="w-6 h-6 rounded-full bg-slate-300/20  "></div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Правое боковое меню -->
-                    <div class="lg:max-w-[370px] md:max-w-[510px] mx-auto">
+                    <div class="lg:max-w-[370px] md:max-w-[510px] mx-auto" uk-scrollspy="target: > * > *; cls: uk-animation-scale-up; delay: 100 ;repeat: false">
                         <div class="xl:space-y-6 space-y-3 md:pb-12">
                             <div class="bg-white rounded-xl shadow-sm p-5 px-6 border1 dark:bg-dark2">
                                 <div class="flex justify-between text-black dark:text-white">
@@ -148,7 +131,7 @@
                             </div>
 
                             <!-- Тренды -->
-                            <div class="bg-white rounded-xl shadow-sm p-5 px-6 border1 dark:bg-dark2">
+                            <div class="bg-white rounded-xl shadow-sm p-5 px-6 border1 dark:bg-dark2" uk-scrollspy="target: > * > *; cls: uk-animation-scale-up; delay: 100 ;repeat: false">
 
                                 <div class="flex justify-between text-black dark:text-white">
                                     <h3 class="font-bold text-base"> Топ трендов </h3>
