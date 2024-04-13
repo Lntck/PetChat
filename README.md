@@ -1,2 +1,2 @@
-# PetNet
-Project for Yandex Lyceum (2nd year of study). PetNet is a social network for pet lovers, based on Flask
+# PetChat
+Petchat - is a social network for pets that allows owners and their pets to communicate and share moments of joy and happiness.
