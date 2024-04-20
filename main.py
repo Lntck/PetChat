@@ -34,30 +34,26 @@ def main():
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    db_sess = db_session.create_session()
     if current_user.is_authenticated:
+        db_sess = db_session.create_session()
         posts = db_sess.query(Posts).order_by(Posts.created_date.desc())
         form = PostForm()
         if form.validate_on_submit():
+            db_sess = db_session.create_session()
+            posts = Posts()
+            posts.text = " ".join(i for i in form.text.data.split() if len(i) <= 20)
             file = form.images.data
             if file:
                 file = form.images.data
                 filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
                 file.save(os.path.join("static/images/post", filename))
-            else:
-                filename = ""
-
-            db_sess = db_session.create_session()
-            posts = Posts()
-            posts.text = " ".join(i for i in form.text.data.split() if len(i) <= 20)
-            posts.images = filename
+                posts.images = filename
             current_user.posts.append(posts)
             db_sess.merge(current_user)
             db_sess.commit()
             return redirect('/')
         return render_template("feed.html", title="PetChat", posts=posts, form=form)
-    else:
-        return render_template("index.html", title="PetChat")
+    return render_template("index.html", title="PetChat")
 
 
 @app.route("/about")
@@ -67,32 +63,49 @@ def about():
 
 @app.route("/profile/<int:user_id>")
 def profile(user_id):
-    db_sess = db_session.create_session()
-    posts = db_sess.query(Posts).filter(Posts.user_id == user_id)
-    profile = db_sess.query(User).get(user_id)
-    return render_template("profile.html", title="Профиль", posts=posts.all(), profile=profile)
+    if current_user.is_authenticated:
+        db_sess = db_session.create_session()
+        posts = db_sess.query(Posts).filter(Posts.user_id == user_id)
+        profile = db_sess.query(User).get(user_id)
+        return render_template("profile.html", title="Профиль", posts=posts.all(), profile=profile)
+    return redirect('/')
 
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
-    form = AboutForm()
-    if form.validate_on_submit():
-        file = form.photo.data
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.id == current_user.id).first()
-        if user:
-            user.name = form.name.data
-            user.email = form.email.data
-            user.about = form.about.data
-            if file:
-                filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
-                file.save(os.path.join("static/images/avatars", filename))
-                user.avatar = filename
-            db_sess.commit()
-            return redirect('/settings')
-        else:
-            abort(404)
-    return render_template("settings.html", title="Настройки", form=form)
+    if current_user.is_authenticated:
+        form = AboutForm()
+        if form.validate_on_submit():
+            file = form.photo.data
+            db_sess = db_session.create_session()
+            user = db_sess.query(User).filter(User.id == current_user.id).first()
+            if user:
+                user.name = form.name.data
+                user.email = form.email.data
+                user.about = form.about.data
+                if file:
+                    filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
+                    file.save(os.path.join("static/images/avatars", filename))
+                    user.avatar = filename
+                db_sess.commit()
+                return redirect('/settings')
+            else:
+                abort(404)
+        return render_template("settings.html", title="Настройки", form=form)
+    return redirect('/')
+
+
+@app.route('/post_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post_delete(id):
+    db_sess = db_session.create_session()
+    post = db_sess.query(Posts).filter(Posts.id == id, Posts.user == current_user).first()
+    if post:
+        db_sess.delete(post)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
 
 
 @app.route('/register', methods=['GET', 'POST'])

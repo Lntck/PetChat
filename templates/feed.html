@@ -40,6 +40,10 @@
                                     <div  class="w-[245px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
                                         <nav>
                                             <a href="/"> <ion-icon class="text-xl shrink-0" name="flag-outline"></ion-icon>  Пожаловаться </a>
+                                            <hr>
+                                            {% if current_user.is_authenticated and current_user.id == post.user_id %}
+                                                <a href="/post_delete/{{ post.id }}" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl shrink-0" name="stop-circle-outline"></ion-icon> Удалить </a>
+                                            {% endif %}
                                         </nav>
                                     </div>
                                 </div>
