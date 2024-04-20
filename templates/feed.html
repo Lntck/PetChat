@@ -11,12 +11,13 @@
                             <div class="bg-white rounded-xl shadow-sm p-4 space-y-4 text-sm font-medium border1 dark:bg-dark2">
                                 <div class="flex items-center gap-3">
                                     <div class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3 ">
-                                        {{ form.text(maxlength="1000", style="max-height:512; min-height:42px; height: 42px;", type="text", placeholder="Что нового?", class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", rows="3") }}
+                                        <textarea maxlength="1000" placeholder="Что нового?" type="text" style="max-height:512px; min-height:42px; height: 42px;" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" rows="3" name="text"></textarea>
+                                        <img id="preview" class="w-full h-full object-cover inset-0 rounded-lg" alt=""/>
                                     </div>
                                     <label class="button__ico ml-auto cursor-pointer" for="file_input">
                                         <ion-icon class="text-3xl" name="image-outline"></ion-icon>
                                     </label>
-                                    {{ form.images(type="file", class="button__ico", id="file_input", style="display: none;") }}
+                                    {{ form.images(type="file", class="button__ico", id="file_input", onchange="displayImage(this)", style="display: none;") }}
                                     <label class="button__ico ml-auto cursor-pointer" for="submit">
                                         <ion-icon class="text-3xl" name="paper-plane-outline"></ion-icon>
                                     </label>
@@ -34,7 +35,6 @@
                                     <a href="/profile/{{ post.user.id }}"> <h4 class="text-black dark:text-white"> {{ post.user.name }} </h4> </a>
                                     <div class="text-xs text-gray-500 dark:text-white/80"> {{ post.created_date }}</div>
                                 </div>
-
                                 <div class="-mr-1">
                                     <button type="button" class="button__ico w-8 h-8"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> </button>
                                     <div  class="w-[245px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
@@ -52,15 +52,15 @@
                                 <span class="text-sm mt-2 md:font-normal font-light"> {{ post.text }}</span>
                             </div>
                             {% if post.images %}
-                            <div class="relative uk-visible-toggle sm:px-4" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 200; max-height: 250;">
-                                <ul class="uk-slideshow-items" uk-lightbox="">
+                                <div class="relative uk-visible-toggle sm:px-4" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 200; max-height: 350;">
+                                    <ul class="uk-slideshow-items" uk-lightbox="">
                                         <li class="w-full overflow-hidden sm:rounded-md">
                                             <a href="/static/images/post/{{ post.images }}">
                                                 <img src="/static/images/post/{{ post.images }}" class="w-full h-full object-cover inset-0" alt="">
                                             </a>
                                         </li>
-                                </ul>
-                            </div>
+                                    </ul>
+                                </div>
                             {% endif %}
                             <div class="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
                                 <div class="flex items-center gap-2.5">

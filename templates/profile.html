@@ -55,7 +55,11 @@
                                     <!-- Пост -->
                                     <div class="relative lg:rounded-xl rounded-md overflow-hidden shadow bg-white dark:bg-dark2">
                                         <div class="flex items-center gap-3 sm:px-4 py-3 p-2 text-sm font-normal">
-                                            <div class="h-6"></div>
+                                            <div class="h-6">
+                                                <div class="flex-1 top-0.5 left-0 md:m-2.5 m-1">
+                                                    <div class="text-xs text-gray-500 dark:text-white/80"> {{ post.created_date }}</div>
+                                                </div>
+                                            </div>
                                             <div class="absolute top-0.5 right-0 md:m-2.5 m-1">
                                                 <button type="button" class="button__ico w-8 h-8"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon> </button>
                                                 <div  class="w-[232px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
