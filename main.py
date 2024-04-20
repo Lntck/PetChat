@@ -3,7 +3,7 @@ import secrets
 from flask import Flask, render_template, redirect, request, abort
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms.posts import PostForm
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, AboutForm
 from data.posts import Posts
 from data.users import User
 from data import db_session
@@ -71,6 +71,28 @@ def profile(user_id):
     posts = db_sess.query(Posts).filter(Posts.user_id == user_id)
     profile = db_sess.query(User).get(user_id)
     return render_template("profile.html", title="Профиль", posts=posts.all(), profile=profile)
+
+
+@app.route("/settings", methods=['GET', 'POST'])
+def settings():
+    form = AboutForm()
+    if form.validate_on_submit():
+        file = form.photo.data
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        if user:
+            user.name = form.name.data
+            user.email = form.email.data
+            user.about = form.about.data
+            if file:
+                filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
+                file.save(os.path.join("static/images/avatars", filename))
+                user.avatar = filename
+            db_sess.commit()
+            return redirect('/settings')
+        else:
+            abort(404)
+    return render_template("settings.html", title="Настройки", form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])

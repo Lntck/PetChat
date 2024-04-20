@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
+            <div class="max-w-2xl mx-auto">
+                <div class="page__heading px-6 pt-8 ">
+                    <a href="/">
+                        <ion-icon name="chevron-back-outline"></ion-icon> Назад
+                    </a>
+                    <h1> Настройки </h1>
+                </div>
+                <form action="" method="post" class="space-y-3" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                    <div class="bg-white border border-slate-200 rounded-xl shadow-sm dark:border-slate-700 dark:bg-dark2">
+                        <div class="flex md:gap-8 gap-4 items-center md:p-10 p-6">
+                            <div class="relative md:w-20 md:h-20 w-12 h-12 shrink-0">
+                                <label>
+                                    <img id="preview" src="../static/images/avatars/{{ current_user.avatar }}" class="object-cover w-full h-full rounded-full" alt=""/>
+                                </label>
+                                <label style="cursor: pointer;" class="md:p-1 p-0.5 rounded-full bg-slate-600 md:border-4 border-white absolute -bottom-2 -right-2 cursor-pointer dark:border-slate-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="md:w-4 md:h-4 w-3 h-3 fill-white cursor-pointer">
+                                        <path d="M12 9a3.75 3.75 0 100 7.5A3.75 3.75 0 0012 9z" />
+                                        <path fill-rule="evenodd" d="M9.344 3.071a49.52 49.52 0 015.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 01-3 3h-15a3 3 0 01-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 001.11-.71l.822-1.315a2.942 2.942 0 012.332-1.39zM6.75 12.75a5.25 5.25 0 1110.5 0 5.25 5.25 0 01-10.5 0zm12-1.5a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                                    </svg>
+                                    {{ form.photo(type="file", id="imageInput", onchange="displayImage(this)", style="opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer;") }}
+                                </label>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="md:text-xl text-base font-semibold text-black dark:text-white"> {{ current_user.name }} </h3>
+                            </div>
+                        </div>
+                        <hr class="border-t border-gray-100 dark:border-slate-700">
+                        <div class="relative -mb-px px-2" tabindex="-1" uk-slider="finite: true">
+                            <nav class="overflow-hidden rounded-xl uk-slider-container pt-2">
+                                <ul class="uk-slider-items w-[calc(100%+10px)] capitalize font-semibold text-gray-500 text-sm dark:text-white" uk-switcher="connect: #setting_tab ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">
+                                    <li class="w-auto pr-2.5"> <a href="setting.html#" class="inline-block p-4 pt-2 border-b-2 border-transparent aria-expanded:text-blue-500 aria-expanded:border-blue-500"> Общие</a> </li>
+                                    <li class="w-auto pr-2.5"> <a href="setting.html#" class="inline-block p-4 pt-2 border-b-2 border-transparent aria-expanded:text-blue-500 aria-expanded:border-blue-500"> Уведомления</a> </li>
+                                    <li class="w-auto pr-2.5"> <a href="setting.html#" class="inline-block p-4 pt-2 border-b-2 border-transparent aria-expanded:text-blue-500 aria-expanded:border-blue-500"> Приватность</a> </li>
+                                    <li class="w-auto pr-2.5"> <a href="setting.html#" class="inline-block p-4 pt-2 border-b-2 border-transparent aria-expanded:text-blue-500 aria-expanded:border-blue-500"> Пароль</a> </li>
+                                </ul>
+                            </nav>
+                            <a class="absolute -translate-y-1/2 top-1/2 left-0 flex items-center w-20 h-full p-2.5 justify-start rounded-xl bg-gradient-to-r from-white via-white dark:from-slate-800 dark:via-slate-800" href="setting.html#" uk-slider-item="previous"> <ion-icon name="chevron-back" class="text-2xl ml-1"></ion-icon> </a>
+                            <a class="absolute right-0 -translate-y-1/2 top-1/2 flex items-center w-20 h-full p-2.5 justify-end rounded-xl bg-gradient-to-l from-white via-white dark:from-slate-800 dark:via-slate-800" href="setting.html#" uk-slider-item="next">  <ion-icon name="chevron-forward" class="text-2xl mr-1"></ion-icon> </a>
+                        </div>
+                    </div>
+                    <div class="mt-6 mb-20 text-sm font-medium text-gray-600 dark:text-white/80">
+                        <div id="setting_tab" class="uk-switcher bg-white border rounded-xl shadow-sm md:py-12 md:px-20 p-6 overflow-hidden dark:border-slate-700 dark:bg-dark2">
+                            <!-- Общие -->
+                            <div>
+                                <div>
+                                    <div class="space-y-6">
+                                        <div class="md:flex items-center gap-10">
+                                            <label class="md:w-32 text-right"> Имя </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                {{ form.name(type="text", class="lg:w-1/2 w-full", value=current_user.name) }}
+                                            </div>
+                                        </div>
+                                        <div class="md:flex items-center gap-10">
+                                            <label class="md:w-32 text-right"> Почта </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                {{ form.email(type="email", class="lg:w-1/2 w-full", value=current_user.email) }}
+                                            </div>
+                                        </div>
+                                        <div class="md:flex items-start gap-10">
+                                            <label class="md:w-32 text-right"> Краткая информация </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <textarea style="min-height:42px;" class="w-full" rows="5" name="about">{{ current_user.about }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-4 mt-16">
+                                        <button href="/settings" class="button lg:px-6 bg-secondery max-md:flex-1"> Отменить </button>
+                                        {{ form.submit(type="submit", class="button lg:px-10 bg-primary text-white max-md:flex-1") }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Уведомления -->
+                            <div>
+                                <div>
+                                    <div class="md:flex items-start gap-16">
+                                        <label class="md:w-32 text-right font-semibold">  Уведомить меня если: </label>
+                                        <div class="flex-1 space-y-4 interactive-effect max-md:mt-5">
+                                            <div>
+                                                <label class="inline-flex items-center">
+                                                  <input class="rounded" type="checkbox" checked name="checkbox1" value="3" />
+                                                  <span class="ml-3"> Мне пришло сообщение </span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="inline-flex items-center">
+                                                  <input class="rounded" type="checkbox" checked name="checkbox1" value="3" />
+                                                  <span class="ml-3"> Кто-то лайкнул мой пост </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-4 mt-16">
+                                        <button type="submit" class="button lg:px-6 bg-secondery max-md:flex-1"> Отменить</button>
+                                        <button type="submit" class="button lg:px-10 bg-primary text-white max-md:flex-1"> Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Приватность -->
+                            <div>
+                                <div>
+                                    <div class="space-y-6">
+                                        <div class="md:flex items-center gap-16 justify-between">
+                                            <label class="md:w-40 text-right"> Кто может написать мне ? </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <select class="w-full !border-0 !rounded-md">
+                                                    <option value="1">Все пользователи</option>
+                                                    <option value="2">Никто</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="md:flex items-center gap-16 justify-between">
+                                            <label class="md:w-40 text-right"> Статус </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <select class="w-full !border-0 !rounded-md">
+                                                    <option value="1">В сети</option>
+                                                    <option value="2">Не в сети</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="md:flex items-center gap-16 justify-between">
+                                            <label class="md:w-40 text-right"> Разрешить поисковым системам найти меня </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <select class="w-full !border-0 !rounded-md">
+                                                    <option value="1">Да</option>
+                                                    <option value="2">Нет</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-4 mt-16">
+                                        <button type="submit" class="button lg:px-6 bg-secondery max-md:flex-1"> Отменить</button>
+                                        <button type="submit" class="button lg:px-10 bg-primary text-white max-md:flex-1"> Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Пароль -->
+                            <div>
+                                <div>
+                                    <div class="space-y-6">
+                                        <div class="md:flex items-center gap-16 justify-between max-md:space-y-3">
+                                            <label class="md:w-40 text-right"> Текущий пароль </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <input type="password" placeholder="******" class="w-full">
+                                            </div>
+                                        </div>
+                                        <div class="md:flex items-center gap-16 justify-between max-md:space-y-3">
+                                            <label class="md:w-40 text-right"> Новый пароль </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <input type="password" placeholder="******" class="w-full">
+                                            </div>
+                                        </div>
+                                        <div class="md:flex items-center gap-16 justify-between max-md:space-y-3">
+                                            <label class="md:w-40 text-right"> Повторите новый пароль </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <input type="password" placeholder="******" class="w-full">
+                                            </div>
+                                        </div>
+                                        <hr class="border-gray-100 dark:border-gray-700">
+                                        <div class="md:flex items-center gap-16 justify-between">
+                                            <label class="md:w-40 text-right"> Двухфакторная аутентификация </label>
+                                            <div class="flex-1 max-md:mt-4">
+                                                <select class="w-full !border-0 !rounded-md">
+                                                    <option value="1">Включить</option>
+                                                    <option value="2">Выключить</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-4 mt-16">
+                                        <button type="submit" class="button lg:px-6 bg-secondery max-md:flex-1"> Отменить</button>
+                                        <button type="submit" class="button lg:px-10 bg-primary text-white max-md:flex-1"> Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+{% endblock %}
