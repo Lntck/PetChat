@@ -22,7 +22,9 @@
                                 </div>
                                 <div class="flex items-center gap-3 text-sm">
                                     {% if profile.id != current_user.get_id() | int %}
-                                    <button type="submit" class="button bg-pink-600 text-white">Написать</button>
+                                    <a href="/message/{{ profile.id }}">
+                                        <button type="submit" class="button bg-pink-600 text-white">Написать</button>
+                                    </a>
                                     {% endif %}
                                     <div> 
                                         <button type="submit" class="rounded-lg bg-slate-200/60 flex px-2 py-1.5 dark:bg-dark2"> <ion-icon class="text-xl" name="ellipsis-horizontal"></ion-icon></button>

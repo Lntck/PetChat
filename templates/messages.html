@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- main contents -->
+    <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
+        <div class="2xl:max-w-6xl mx-auto h-screen relative shadow-lg overflow-hidden border1 max-md:pt-14">
+            <div class="flex bg-white dark:bg-dark2">
+                <!-- sidebar -->
+                <div class="md:w-[360px] relative border-r dark:border-slate-700">
+                    <div id="side-chat" class="top-0 left-0 max-md:fixed max-md:w-5/6 max-md:h-screen bg-white z-50 max-md:shadow max-md:-translate-x-full dark:bg-dark2">
+                        <!-- heading title -->
+                        <div class="p-4 border-b dark:border-slate-700">
+                            <div class="flex mt-2 items-center justify-between">
+                                <h2 class="text-2xl font-bold text-black ml-1 dark:text-white"> Чаты </h1>
+                                <!-- right action buttons -->
+                                <div class="flex items-center gap-2.5">
+                                    <button class="group">
+                                        <ion-icon name="settings-outline" class="text-2xl flex group-aria-expanded:rotate-180"></ion-icon>
+                                    </button>
+                                    <div  class="md:w-[270px] w-full" uk-dropdown="pos: bottom-left; offset:10; animation: uk-animation-slide-bottom-small">
+                                        <nav>
+                                            <a href="/settings"> <ion-icon class="text-2xl shrink-0 -ml-1" name="notifications-outline"></ion-icon> Настройки приватности </a>
+                                            <a href="messages.html#"> <ion-icon class="text-xl shrink-0 -ml-1" name="volume-mute-outline"></ion-icon> Отключить уведомления</a>
+                                        </nav>
+                                    </div>
+                                    <button class="">
+                                        <ion-icon name="checkmark-circle-outline" class="text-2xl flex"></ion-icon>
+                                    </button>
+                                    <!-- mobile toggle menu -->
+                                    <button type="button" class="md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full">
+                                        <ion-icon name="chevron-down-outline"></ion-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- search -->
+                            <div class="relative mt-4">
+                                <div class="absolute left-3 bottom-1/2 translate-y-1/2 flex"><ion-icon name="search" class="text-xl"></ion-icon></div>
+                                <input type="text" placeholder="Search" class="w-full !pl-10 !py-2 !rounded-lg">
+                            </div>
+                        </div>
+
+
+                        <!-- users list -->
+                        <div class="space-y-2 p-2 overflow-y-auto h-[calc(100vh-127px)]">
+                            {% for dialog in dialogs %}
+                                <a href="/message/{{ dialog.user.id }}" class="relative flex items-center gap-4 p-2 duration-200 rounded-xl hover:bg-secondery">
+                                    <div class="relative w-14 h-14 shrink-0">
+                                        <img src="/static/images/avatars/{{ dialog.user.avatar }}" alt="" class="object-cover w-full h-full rounded-full">
+                                        <div class="w-4 h-4 absolute bottom-0 right-0  bg-green-500 rounded-full border border-white dark:border-slate-800"></div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center gap-2 mb-1.5">
+                                            <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ dialog.user.name }}</div>
+                                        </div>
+                                        <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{{ dialog.text }}</div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- overly -->
+                    <div id="side-chat" class="bg-slate-100/40 backdrop-blur w-full h-full dark:bg-slate-800/40 z-40 fixed inset-0 max-md:-translate-x-full md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full"></div>
+                </div>
+
+                <!-- message center -->
+                <div class="flex-1">
+                    <!-- chat heading -->
+                    <div class="flex items-center justify-between gap-2 w- px-6 py-3.5 z-10 border-b dark:border-slate-700 uk-animation-slide-top-medium">
+                        <div class="flex items-center sm:gap-4 gap-2">
+                            <!-- toggle for mobile -->
+                            <button type="button" class="md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full">
+                                <ion-icon name="chevron-back-outline" class="text-2xl -ml-4"></ion-icon>
+                            </button>
+
+                            <div class="relative cursor-pointer max-md:hidden"  uk-toggle="target: .rightt ; cls: hidden">
+                                <img src="/static/images/avatars/{{ receiver.avatar }}" alt="" class="w-8 h-8 rounded-full shadow">
+                                <div class="w-2 h-2 bg-teal-500 rounded-full absolute right-0 bottom-0 m-px"></div>
+                            </div>
+                            <div class="cursor-pointer" uk-toggle="target: .rightt ; cls: hidden">
+                                <div class="text-base font-bold"> {{ receiver.name }}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button type="button" class="button__ico">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+                                    <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <button type="button" class="hover:bg-slate-100 p-1.5 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                                </svg>
+                            </button>
+                            <button type="button" class="hover:bg-slate-100 p-1.5 rounded-full" uk-toggle="target: .rightt ; cls: hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                                  </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- chats bubble -->
+                    <div class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100vh-137px)] h-[calc(100vh-250px)]" id="chat1">
+
+                        <div class="py-10 text-center text-sm lg:pt-8">
+                            <img src="/static/images/avatars/{{ receiver.avatar }}" class="w-24 h-24 rounded-full mx-auto mb-2" alt="">
+                            <div>
+                                <div class="md:text-xl text-base font-medium text-black dark:text-white"> {{ receiver.name }}</div>
+                            </div>
+                            <div>
+                                 <a href="/profile/{{ receiver.id }}" class="inline-block rounded-lg px-4 py-1.5 text-sm font-semibold bg-secondery"> Просмотреть профиль</a>
+                            </div>
+                        </div>
+
+                        <div class="text-sm font-medium space-y-6" id="chat">
+                            {% for message in messages %}
+                                {% if message.sender == current_user.id %}
+                                    <!-- sent -->
+                                    <div class="flex gap-2 flex-row-reverse items-end">
+                                        <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow">  {{ message.text }}</div>
+                                    </div>
+                                {% else %}
+                                    <!-- received -->
+                                    <div class="flex gap-3">
+                                        <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow"> {{ message.text }}</div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- sending message area -->
+                    <form class="space-y-3" id="messageForm">
+                        <div class="flex items-center md:gap-4 gap-2 md:p-3 p-2 overflow-hidden">
+                            <div id="message__wrap" class="flex items-center gap-2 h-full dark:text-white -mt-1.5">
+                                <button type="button"  class="shrink-0" onclick="file.click()">
+                                    <ion-icon class="text-3xl flex" name="add-circle-outline"></ion-icon>
+                                </button>
+                                <input id="file" type="file" name="file" hidden />
+
+                                <button type="button"  class="shrink-0">
+                                    <ion-icon class="text-3xl flex" name="happy-outline"></ion-icon>
+                                </button>
+
+                                <div class="dropbar p-2" uk-drop="stretch: x; target: #message__wrap ;animation: uk-animation-scale-up uk-transform-origin-bottom-left ;animate-out: true; pos: top-left ; offset:2; mode: click ; duration: 200 ">
+                                    <div class="sm:w-60 bg-white shadow-lg border rounded-xl  pr-0 dark:border-slate-700 dark:bg-dark3">
+                                        <h4 class="text-sm font-semibold p-3 pb-0"> Эмодзи</h4>
+                                        <div class="grid grid-cols-5 overflow-y-auto max-h-44 p-3 text-center text-xl">
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😊 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🤩 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😎</div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🥳 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😂 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🥰 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😡 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😊 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🤩 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😎</div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🥳 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😂 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🥰 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😡 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🤔 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😊 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🤩 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😎</div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 🥳 </div>
+                                            <div class="hover:bg-secondery p-1.5 rounded-md hover:scale-125 cursor-pointer duration-200"> 😂 </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative flex-1">
+                                <textarea name="text" id="text" placeholder="Напишите сообщение..." rows="1" class="w-full resize-none bg-secondery rounded-full px-4 p-2"></textarea>
+                            </div>
+                            <button type="button" class="flex h-full dark:text-white" onclick="sendMessage()">
+                                <ion-icon class="text-3xl" name="paper-plane-outline"></ion-icon>
+                            </button>
+                            <input type="text" name="recipient_id" id="recipient_id" placeholder="ID получателя" hidden value="{{ receiver.id }}">
+                            <input type="text" name="sender_id" id="sender_id" placeholder="ID Отправителя" hidden value="{{ current_user.id }}">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- user profile right info -->
+                <div class="rightt w-full h-full absolute top-0 right-0 z-10 hidden transition-transform">
+                    <div class="w-[360px] border-l shadow-lg h-screen bg-white absolute right-0 top-0 uk-animation-slide-right-medium delay-200 z-50 dark:bg-dark2 dark:border-slate-700">
+                        <div class="w-full h-1.5 bg-gradient-to-r to-purple-500 via-red-500 from-pink-500 -mt-px"></div>
+                        <div class="py-10 text-center text-sm pt-20">
+                            <img src="/static/images/avatars/{{ receiver.avatar }}" class="w-24 h-24 rounded-full mx-auto mb-3" alt="">
+                            <div>
+                                <div class="md:text-xl text-base font-medium text-black dark:text-white"> {{ receiver.name }}  </div>
+                            </div>
+                            <div>
+                                 <a href="/profile/{{ receiver.id }}" class="inline-block rounded-full px-4 py-1.5 text-sm font-semibold bg-secondery">Просмотреть профиль</a>
+                            </div>
+                        </div>
+                        <hr class="opacity-80 dark:border-slate-700">
+                        <ul class="text-base font-medium p-3">
+                            <li>
+                                <div class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-secondery">
+                                    <ion-icon name="notifications-off-outline" class="text-2xl"></ion-icon> Отключить уведомления
+                                    <label class="switch cursor-pointer ml-auto"> <input type="checkbox" checked><span class="switch-button !relative"></span></label>
+                                </div>
+                            </li>
+                            <li> <button type="button" class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-secondery"> <ion-icon name="flag-outline" class="text-2xl"></ion-icon> Пожаловаться</button></li>
+                            <li> <button type="button" class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-secondery"> <ion-icon name="stop-circle-outline" class="text-2xl"></ion-icon> Заблокировать</button> </li>
+                            <li> <button type="button" class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-red-50 text-red-500"> <ion-icon name="trash-outline" class="text-2xl"></ion-icon> Удалить чат</button> </li>
+                        </ul>
+                        <!-- close button -->
+                        <button type="button" class="absolute top-0 right-0 m-4 p-2 bg-secondery rounded-full" uk-toggle="target: .rightt ; cls: hidden">
+                            <ion-icon name="close" class="text-2xl flex"></ion-icon>
+                        </button>
+                    </div>
+                    <!-- overly -->
+                    <div class="bg-slate-100/40 backdrop-blur absolute w-full h-full dark:bg-slate-800/40" uk-toggle="target: .rightt ; cls: hidden"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function updateChat() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/message_get/' + {{ current_user.id }}, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200 && JSON.parse(xhr.responseText).text !== "") {
+                    var message = JSON.parse(xhr.responseText);
+                    console.log(message.text)
+                    var messageElement = document.createElement('div');
+                    messageElement.className = 'flex gap-3';
+                    messageElement.innerHTML = `
+                        <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow">
+                            ${message.text}
+                        </div>
+                    `;
+                    document.getElementById('chat').appendChild(messageElement);
+                }
+            };
+            xhr.send();
+        }
+        setInterval(updateChat, 5000);
+
+        function scrollToBottom() {
+            var chatContainer = document.getElementById('chat1');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        scrollToBottom();
+    </script>
+{% endblock %}

@@ -19,6 +19,7 @@ class User(SqlAlchemyBase, UserMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
 
     posts = orm.relationship("Posts", back_populates='user')
+    message = orm.relationship("Message", back_populates='user')
 
 
     def __repr__(self):

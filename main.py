@@ -1,12 +1,15 @@
 import os
 import secrets
-from flask import Flask, render_template, redirect, request, abort
+from flask import Flask, render_template, redirect, request, abort, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from sqlalchemy import or_
 from forms.posts import PostForm
 from forms.user import RegisterForm, LoginForm, AboutForm
 from data.posts import Posts
 from data.users import User
+from data.messages import Message
 from data import db_session
+import datetime
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -44,7 +47,6 @@ def index():
             posts.text = " ".join(i for i in form.text.data.split() if len(i) <= 20)
             file = form.images.data
             if file:
-                file = form.images.data
                 filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
                 file.save(os.path.join("static/images/post", filename))
                 posts.images = filename
@@ -68,6 +70,26 @@ def profile(user_id):
         posts = db_sess.query(Posts).filter(Posts.user_id == user_id)
         profile = db_sess.query(User).get(user_id)
         return render_template("profile.html", title="Профиль", posts=posts.all(), profile=profile)
+    return redirect('/')
+
+
+@app.route("/message/<int:user_id>")
+def message(user_id):
+    if current_user.is_authenticated and current_user.id != user_id:
+        db_sess = db_session.create_session()
+        messages = db_sess.query(Message).filter(or_((Message.sender == user_id) & (Message.receiver == current_user.id), (Message.receiver == user_id) & (Message.sender == current_user.id))).all()
+        receiver = db_sess.query(User).get(user_id)
+        dialogs = db_sess.query(Message).filter(Message.receiver == current_user.id).group_by(Message.sender).order_by(Message.id.desc()).all()
+        return render_template("messages.html", title="Мессенджер", messages=messages, receiver=receiver, dialogs=dialogs)
+    return redirect('/')
+
+
+@app.route("/message")
+def dialogs():
+    if current_user.is_authenticated:
+        db_sess = db_session.create_session()
+        dialogs = db_sess.query(Message).filter(Message.receiver == current_user.id).group_by(Message.sender).order_by(Message.id.desc()).all()
+        return render_template("dialogs.html", title="Мессенджер", dialogs=dialogs)
     return redirect('/')
 
 
@@ -106,6 +128,41 @@ def post_delete(id):
     else:
         abort(404)
     return redirect('/')
+
+
+@app.route('/message_send', methods=['POST'])
+@login_required
+def message_send():
+    if request.form["text"]:
+        db_sess = db_session.create_session()
+        message = Message()
+        message.text = request.form["text"]
+        message.sender = request.form["sender_id"]
+        message.receiver = request.form["recipient_id"]
+        message.time = f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}'
+        # file = request.form["file"]
+        # if file:
+        #     filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
+        #     file.save(os.path.join("static/images/post", filename))
+        #     message.images = filename
+        current_user.message.append(message)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return jsonify({"text": request.form["text"]})
+    return jsonify([])
+
+
+@app.route('/message_get/<int:user_id>', methods=['GET'])
+@login_required
+def message_get(user_id):
+    db_sess = db_session.create_session()
+    last_message = db_sess.query(Message).filter(Message.receiver == user_id).order_by(Message.id.desc()).first()
+    db_sess.close()
+    time = datetime.datetime.now()
+    if last_message:
+        if datetime.datetime.strptime(last_message.time, "%Y-%m-%d %H:%M:%S") + datetime.timedelta(seconds=5) > time:
+            return jsonify({'text': last_message.text})
+    return jsonify({'text': ""})
 
 
 @app.route('/register', methods=['GET', 'POST'])
