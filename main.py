@@ -17,29 +17,22 @@ login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'secret_key'
 
 
+def main():
+    db_session.global_init("db/blogs.db")
+    app.run()
+
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
-
-
-def main():
-    db_session.global_init("db/blogs.db")
-    app.run()
-
-
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
         db_sess = db_session.create_session()
-        posts = db_sess.query(Posts).order_by(Posts.created_date.desc())
+        posts = db_sess.query(Posts).order_by(Posts.id.desc())
         form = PostForm()
         if form.validate_on_submit():
             db_sess = db_session.create_session()
@@ -50,6 +43,7 @@ def index():
                 filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
                 file.save(os.path.join("static/images/post", filename))
                 posts.images = filename
+            posts.created_date = f'{datetime.datetime.now():%Y-%m-%d %H:%M}'
             current_user.posts.append(posts)
             db_sess.merge(current_user)
             db_sess.commit()
@@ -58,9 +52,84 @@ def index():
     return render_template("index.html", title="PetChat")
 
 
+@app.route('/post_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def post_delete(id):
+    db_sess = db_session.create_session()
+    post = db_sess.query(Posts).filter(Posts.id == id, Posts.user == current_user).first()
+    if post:
+        db_sess.delete(post)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
+
+
 @app.route("/about")
 def about():
     return render_template("index.html", title="PetChat")
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def reqister():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if form.password.data != form.password_again.data:
+            return render_template('register.html', title='Регистрация', form=form, message="Пароли не совпадают")
+        db_sess = db_session.create_session()
+        if db_sess.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html', title='Регистрация', form=form, message="Такой пользователь уже есть")
+        user = User(name=form.name.data, email=form.email.data.lower())
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        return redirect('/login')
+    return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data.lower()).first()
+        db_sess.close()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect("/")
+        return render_template('login.html', title='Авторизация', message="Неправильный логин или пароль", form=form)
+    return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+@app.route("/settings", methods=['GET', 'POST'])
+def settings():
+    if current_user.is_authenticated:
+        form = AboutForm()
+        if form.validate_on_submit():
+            file = form.photo.data
+            db_sess = db_session.create_session()
+            user = db_sess.query(User).filter(User.id == current_user.id).first()
+            if user:
+                user.name = form.name.data
+                user.email = form.email.data
+                user.about = form.about.data
+                if file:
+                    filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
+                    file.save(os.path.join("static/images/avatars", filename))
+                    user.avatar = filename
+                db_sess.commit()
+                return redirect('/settings')
+            else:
+                abort(404)
+        return render_template("settings.html", title="Настройки", form=form)
+    return redirect('/')
 
 
 @app.route("/profile/<int:user_id>")
@@ -90,43 +159,6 @@ def dialogs():
         db_sess = db_session.create_session()
         dialogs = db_sess.query(Message).filter(Message.receiver == current_user.id).group_by(Message.sender).order_by(Message.id.desc()).all()
         return render_template("dialogs.html", title="Мессенджер", dialogs=dialogs)
-    return redirect('/')
-
-
-@app.route("/settings", methods=['GET', 'POST'])
-def settings():
-    if current_user.is_authenticated:
-        form = AboutForm()
-        if form.validate_on_submit():
-            file = form.photo.data
-            db_sess = db_session.create_session()
-            user = db_sess.query(User).filter(User.id == current_user.id).first()
-            if user:
-                user.name = form.name.data
-                user.email = form.email.data
-                user.about = form.about.data
-                if file:
-                    filename = ".".join([secrets.token_urlsafe(15), file.filename.split(".")[-1]])
-                    file.save(os.path.join("static/images/avatars", filename))
-                    user.avatar = filename
-                db_sess.commit()
-                return redirect('/settings')
-            else:
-                abort(404)
-        return render_template("settings.html", title="Настройки", form=form)
-    return redirect('/')
-
-
-@app.route('/post_delete/<int:id>', methods=['GET', 'POST'])
-@login_required
-def post_delete(id):
-    db_sess = db_session.create_session()
-    post = db_sess.query(Posts).filter(Posts.id == id, Posts.user == current_user).first()
-    if post:
-        db_sess.delete(post)
-        db_sess.commit()
-    else:
-        abort(404)
     return redirect('/')
 
 
@@ -161,38 +193,19 @@ def message_get(user_id):
     time = datetime.datetime.now()
     if last_message:
         if datetime.datetime.strptime(last_message.time, "%Y-%m-%d %H:%M:%S") + datetime.timedelta(seconds=5) > time:
-            return jsonify({'text': last_message.text})
+            return jsonify({'text': last_message.text, "sender_id": last_message.sender, "recipient_id": user_id})
     return jsonify({'text': ""})
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def reqister():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Регистрация', form=form, message="Пароли не совпадают")
-        db_sess = db_session.create_session()
-        if db_sess.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html', title='Регистрация', form=form, message="Такой пользователь уже есть")
-        user = User(name=form.name.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db_sess.add(user)
-        db_sess.commit()
-        return redirect('/login')
-    return render_template('register.html', title='Регистрация', form=form)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == form.email.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            return redirect("/")
-        return render_template('login.html', title='Авторизация', message="Неправильный логин или пароль", form=form)
-    return render_template('login.html', title='Авторизация', form=form)
+@app.route('/users_search/<name>', methods=['GET'])
+@login_required
+def users_search(name):
+    db_sess = db_session.create_session()
+    users = db_sess.query(User).filter(User.name.like(f"%{name}%")).order_by(User.name).all()
+    db_sess.close()
+    if users:
+        return jsonify([{'id': user.id, 'avatar': user.avatar, 'name': user.name} for user in users])
+    return jsonify([])
 
 
 if __name__ == '__main__':

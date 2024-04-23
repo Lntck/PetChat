@@ -132,7 +132,7 @@
 
                     <!-- sending message area -->
                     <form class="space-y-3" id="messageForm">
-                        <div class="flex items-center md:gap-4 gap-2 md:p-3 p-2 overflow-hidden">
+                        <div class="flex items-center md:gap-4 gap-2 md:p-3 overflow-hidden ">
                             <div id="message__wrap" class="flex items-center gap-2 h-full dark:text-white -mt-1.5">
                                 <button type="button"  class="shrink-0" onclick="file.click()">
                                     <ion-icon class="text-3xl flex" name="add-circle-outline"></ion-icon>
@@ -172,7 +172,7 @@
                                 </div>
                             </div>
                             <div class="relative flex-1">
-                                <textarea name="text" id="text" placeholder="Напишите сообщение..." rows="1" class="w-full resize-none bg-secondery rounded-full px-4 p-2"></textarea>
+                                <textarea name="text" id="text" maxlength="570" style="max-height: 45px; overflow-y: auto;" type="text" placeholder="Напишите сообщение..." rows="1" class="w-full resize-none bg-secondery rounded-lg px-4"></textarea>
                             </div>
                             <button type="button" class="flex h-full dark:text-white" onclick="sendMessage()">
                                 <ion-icon class="text-3xl" name="paper-plane-outline"></ion-icon>
@@ -226,25 +226,24 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200 && JSON.parse(xhr.responseText).text !== "") {
                     var message = JSON.parse(xhr.responseText);
-                    console.log(message.text)
-                    var messageElement = document.createElement('div');
-                    messageElement.className = 'flex gap-3';
-                    messageElement.innerHTML = `
-                        <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow">
-                            ${message.text}
-                        </div>
-                    `;
-                    document.getElementById('chat').appendChild(messageElement);
+                    console.log(message.sender_id)
+                    console.log(message)
+                    console.log(document.getElementById("recipient_id").value)
+                    if (message.sender_id == document.getElementById("recipient_id").value && message.recipient_id == document.getElementById("sender_id").value) {
+                        console.log(message.text)
+                        var messageElement = document.createElement('div');
+                        messageElement.className = 'flex gap-3';
+                        messageElement.innerHTML = `
+                            <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow">
+                                ${message.text}
+                            </div>
+                        `;
+                        document.getElementById('chat').appendChild(messageElement);
+                    }
                 }
             };
             xhr.send();
         }
         setInterval(updateChat, 5000);
-
-        function scrollToBottom() {
-            var chatContainer = document.getElementById('chat1');
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-        scrollToBottom();
     </script>
 {% endblock %}

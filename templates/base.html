@@ -64,31 +64,20 @@
                         <div class="md:h-screen overflow-y-auto h-[calc(100vh-120px)]">
                             <!-- header -->
                             <div class="px-5 py-4 space-y-5 border-b border-gray-100 dark:border-slate-700">
-                                <h3 class="md:text-xl text-lg font-medium mt-3 text-black dark:text-white">Search</h3>
-
-                                <div class="relative -mx-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 absolute left-3 bottom-1/2 translate-y-1/2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                    </svg>
-                                    <input type="text" placeholder="Search" class="bg-transparen w-full !pl-10 !py-2 !rounded-lg">
-                                </div>
+                                <h3 class="md:text-xl text-lg font-medium mt-3 text-black dark:text-white">Поиск</h3>
+                                <form class="space-y-3" id="searchForm">
+                                    <div class="relative -mx-1">
+                                        <a onclick="searchUser()" class="cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 absolute left-3 bottom-1/2 translate-y-1/2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                            </svg>
+                                        </a>
+                                        <input type="text" id="search_input" placeholder="Search" class="bg-transparen w-full !pl-10 !py-2 !rounded-lg">
+                                    </div>
+                                </form>
                             </div>
                             <!-- contents list -->
-                            <div class="p-2 space-y-2 dark:text-white">
-                                <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-secondery">
-                                    <img src="../static/images/avatars/avatar.jpeg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="font-medium text-sm text-black dark:text-white"> Кузьмич </h4>
-                                    </div>
-                                    <button type="button" class="text-sm rounded-full py-1.5 px-4 font-semibold bg-secondery"> Написать </button>
-                                </a>
-                                <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-secondery">
-                                    <img src="../static/images/avatars/avatar.jpeg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="font-medium text-sm text-black dark:text-white"> Гарфилд </h4>
-                                    </div>
-                                    <button type="button" class="text-sm rounded-full py-1.5 px-4 font-semibold bg-secondery"> Написать </button>
-                                </a>
+                            <div class="p-2 space-y-2 dark:text-white" id="search_list">
                             </div>
                         </div>
                     </div>
